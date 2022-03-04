@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+#Carpetas
+myTurbox/
+
 # Distribution / packaging
 .Python
 build/

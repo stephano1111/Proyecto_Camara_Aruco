@@ -3,6 +3,9 @@ import numpy as np
 import cv2.aruco as aruco 
 import math
 
+#pip opencv-contrib-python: descarga libreria cv2, aruco, y si es necesario, numpy
+
+#modifica imagen, le reduce el brillo
 def change_brightness(img, value):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
@@ -34,6 +37,23 @@ def get_angle(bottomRight,bottomLeft):
     angle=abs(angle)
     return angle
 
+#consigue angulo de rotacion de los codigos aruco en radianes
+def get_anglerad(bottomRight,bottomLeft):
+    x = (bottomRight[0]-bottomLeft[0])
+    y = (bottomRight[1]-bottomLeft[1])
+    angle = math.atan2(y,x)
+    angle = math.degrees(angle)
+    angle*=-1
+
+    if angle <0:
+      angle+=360
+
+    angle=abs(angle)
+    angle=math.radians(angle)
+    angle = round(angle,2)
+    return angle
+
+
 #funcion que dibuja e imprime informacion en el frame de opencv
 def draw_aruco(frame,topLeft,topRight,bottomLeft,bottomRight,MidP,X,Y):
        
@@ -53,7 +73,7 @@ def draw_aruco(frame,topLeft,topRight,bottomLeft,bottomRight,MidP,X,Y):
   cv2.putText(frame, str(f'ID: {markerID}'), (MidP[0][0]-150, MidP[0][1]-200),cv2.FONT_HERSHEY_SIMPLEX, 1, (0,204,204),2,cv2.LINE_AA )
   cv2.putText(frame, str(angle) + " grados", (MidP[0][0]-400, MidP[0][1]-200),cv2.FONT_HERSHEY_SIMPLEX, 1, (0,204,204),2,cv2.LINE_AA )
 
-
+#conseguimos las coordenadas del aruco y lo guadamos como pares (x y y) en variables por seccion diferente
 def get_coordenates(markerCorner):
   # extract the marker corners (which are always returned in
 	# top-left, top-right, bottom-right, and bottom-left order)
@@ -68,6 +88,17 @@ def get_coordenates(markerCorner):
 
   return topLeft,topRight,bottomLeft,bottomRight
 
+#almacenamos info de coordenadas y angulo del aruco, y la almacenamos en un diccionario
+def get_ArucoInfo(markerCorner):
+
+    topLeft,topRight,bottomLeft,bottomRight=get_coordenates(markerCorner)
+ 
+    #Calculamos el angulo de inclinación 
+    angle=get_angle(bottomRight,bottomLeft)
+
+    info={"coordenadas":[topLeft,topRight,bottomLeft,bottomRight],"angulo":angle}
+
+    return info
 
 capture = cv2.VideoCapture(0)
 qrCodeDetector=cv2.aruco
@@ -83,6 +114,8 @@ points = np.arange(8).reshape(4,2)
 MidP = np.arange(2).reshape(1,2)
 Y = np.arange(2).reshape(1,2)
 X = np.arange(2).reshape(1,2)
+
+info=[]
 
 #Main
 #----------------------------------------------------------------------------
@@ -116,6 +149,9 @@ while (True):
         angle=get_angle(bottomRight,bottomLeft)
 
         draw_aruco(frame,topLeft,topRight,bottomLeft,bottomRight,MidP,X,Y)
+
+        #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
+        info.append(get_ArucoInfo(markerCorner))
 
   cv2.imshow(window_name,frame) #Despliega la ventana 
   cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas

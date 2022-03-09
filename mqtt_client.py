@@ -4,7 +4,7 @@ import random
 
 broker = 'broker.hivemq.com'
 port = 1883
-topic = "huber/1"
+topic = "steph/1"
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
 msg = "prueba"

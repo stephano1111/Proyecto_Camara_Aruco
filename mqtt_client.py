@@ -7,7 +7,7 @@ port = 1883
 topic = "huber/1"
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
-msg = "44444"
+msg = "prueba"
 
 #conectar
 client = mqtt_client.Client(client_id)
@@ -17,4 +17,6 @@ client.loop_start()
 #publicar
 client.publish(topic, msg)
 
-print("queeeee)")
+print("Listo")
+
+client.loop_stop()

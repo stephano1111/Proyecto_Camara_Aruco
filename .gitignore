@@ -9,6 +9,9 @@ __pycache__/
 #Carpetas
 myTurbox/
 
+#Archivos
+PruebaEnvioClient.py
+
 # Distribution / packaging
 .Python
 build/

@@ -3,6 +3,11 @@ import numpy as np
 import cv2.aruco as aruco 
 import math
 
+#importamos archivo mqtt_client.py para usar los metodos de la clase que conectan al broker publico, asi podremos enviar la informacion de los codigos aruco
+import sys
+sys.path.append(".")
+from mqtt_client import cliente
+
 #pip opencv-contrib-python: descarga libreria cv2, aruco, y si es necesario, numpy
 
 #modifica imagen, le reduce el brillo
@@ -96,7 +101,7 @@ def get_ArucoInfo(markerCorner):
     #Calculamos el angulo de inclinación 
     angle=get_angle(bottomRight,bottomLeft)
 
-    info={"coordenadas":[topLeft,topRight,bottomLeft,bottomRight],"angulo":angle}
+    info={"coordenadas":[topLeft,topRight,bottomLeft,bottomRight],"angulo":(angle)}
 
     return info
 
@@ -116,6 +121,8 @@ Y = np.arange(2).reshape(1,2)
 X = np.arange(2).reshape(1,2)
 
 info=[]
+
+client=cliente()
 
 #Main
 #----------------------------------------------------------------------------
@@ -152,6 +159,10 @@ while (True):
 
         #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
         info.append(get_ArucoInfo(markerCorner))
+    
+        client.set_msg(info[0]["coordenadas"][0][0])
+        client.connect_client(info)
+      
 
   cv2.imshow(window_name,frame) #Despliega la ventana 
   cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas

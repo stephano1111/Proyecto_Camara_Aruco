@@ -165,7 +165,7 @@ while (True):
       
 
   cv2.imshow(window_name,frame) #Despliega la ventana 
-  cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas
+  #cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas
     
   if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
     break

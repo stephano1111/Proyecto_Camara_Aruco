@@ -28,6 +28,30 @@ class cliente:
         client.connect(self.get_broker(), self.get_port())
         client.loop_start()
         #publicar
+        prom=0
+        prom1=0
+        prom2=0
+        prom3=0
         for info in list:
-            client.publish(self.get_topic(),str(info["coordenadas"][0][0]))
+
+            #Info viene de camara aruco
+            for i in range (1000):
+                prom+=info["coordenadas"][0][0]
+                prom1+=info["coordenadas"][0][1]
+                prom2+=info["coordenadas"][1][0]
+                prom3+=info["coordenadas"][1][1]
+
+            prom=prom/1000
+            prom1=prom/1000
+            prom2=prom/1000
+            prom3=prom/1000
+           
+            prom= round(prom,2)
+            prom1= round(prom1,2)
+            prom2= round(prom2,2)
+            prom3= round(prom3,2)
+
+            client.publish(self.get_topic(),"Coordenada x1: " + str(prom) + " Coordenada y1: " + str(prom1) + "Coordenada x2: " + str(prom2) + "Coordenada y2: " + str(prom3))
+
+            #client.publish(self.get_topic(),"hola")
         client.loop_stop()

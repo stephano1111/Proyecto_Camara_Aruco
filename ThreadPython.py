@@ -12,19 +12,19 @@ def thread_function2(cont):
     time.sleep(2)
     logging.info("Cont %s: finishing", cont)
 
-cont=0
+cont = 0
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
-    logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
+    logging.basicConfig(format = format, level = logging.INFO, datefmt = "%H:%M:%S")
 
     threads=list()
     for index in range(3):
-        cont+=2
+        cont += 2
         #logging.info("Main      : create and start thread %d.", index)
         if index > 0:
-            x = threading.Thread(target=thread_function, args=(index,))
+            x = threading.Thread(target = thread_function, args = (index,))
         else:
-            x = threading.Thread(target=thread_function2, args=(cont,))
+            x = threading.Thread(target = thread_function2, args = (cont,))
         threads.append(x)
         x.start()
 

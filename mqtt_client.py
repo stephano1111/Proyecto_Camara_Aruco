@@ -61,8 +61,6 @@ class cliente:
             prom6=prom6/1000
             prom7=prom7/1000
             Angle=Angle/1000
-
-
            
             prom= round(prom,2)
             prom1= round(prom1,2)
@@ -75,6 +73,16 @@ class cliente:
             Angle= round(Angle,2)
 
             client.publish(self.get_topic(),"Coordenada x1: " + str(prom) + " Coordenada y1: " + str(prom1) + " Coordenada x2: " + str(prom2) + " Coordenada y2: " + str(prom3)+" Coordenada x3: " + str(prom4) + " Coordenada y3: " + str(prom5) + " Coordenada x4: " + str(prom6) + " Coordenada y4: " + str(prom7)+ " Angulo"+ str(Angle))
+
+            prom= 0
+            prom1= 0
+            prom2= 0
+            prom3= 0
+            prom4= 0
+            prom5= 0
+            prom6= 0
+            prom7= 0
+            Angle= 0
 
             #client.publish(self.get_topic(),"hola")
         client.loop_stop()

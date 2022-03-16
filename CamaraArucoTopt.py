@@ -160,7 +160,8 @@ while (True):
         #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
         info.append(get_ArucoInfo(markerCorner))
     
-        client.set_msg(info[0]["coordenadas"][0][0])
+        #client.set_msg(info[0]["coordenadas"][0][0])
+        print(info)
         client.connect_client(info)
       
 

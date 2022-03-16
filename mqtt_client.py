@@ -72,7 +72,7 @@ class cliente:
             prom7= round(prom7,2)
             Angle= round(Angle,2)
 
-            client.publish(self.get_topic(),"Coordenada x1: " + str(prom) + " Coordenada y1: " + str(prom1) + " Coordenada x2: " + str(prom2) + " Coordenada y2: " + str(prom3)+" Coordenada x3: " + str(prom4) + " Coordenada y3: " + str(prom5) + " Coordenada x4: " + str(prom6) + " Coordenada y4: " + str(prom7)+ " Angulo"+ str(Angle))
+            client.publish(self.get_topic(),"Coordenada x1: " + str(prom) + " Coordenada y1: " + str(prom1) + " Coordenada x2: " + str(prom2) + " Coordenada y2: " + str(prom3)+" Coordenada x3: " + str(prom4) + " Coordenada y3: " + str(prom5) + " Coordenada x4: " + str(prom6) + " Coordenada y4: " + str(prom7)+ " Angulo: "+ str(Angle)+ " ID: "+ str(info["ID"]) )
 
             prom= 0
             prom1= 0

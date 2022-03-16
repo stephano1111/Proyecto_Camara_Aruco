@@ -101,7 +101,7 @@ def get_ArucoInfo(markerCorner):
     #Calculamos el angulo de inclinación 
     angle=get_angle(bottomRight,bottomLeft)
 
-    info={"coordenadas":[topLeft,topRight,bottomLeft,bottomRight],"angulo":(angle)}
+    info={"coordenadas":[topLeft,topRight,bottomLeft,bottomRight],"angulo":(angle),"ID":(markerID) }
 
     return info
 

@@ -39,7 +39,16 @@ class cliente:
         Angle = 0
 
         for info in list:
-
+            prom = info["coordenadas"][0][0]
+            prom1 = info["coordenadas"][0][1]
+            prom2 = info["coordenadas"][1][0]
+            prom3 = info["coordenadas"][1][1]
+            prom4 = info["coordenadas"][2][0]
+            prom5 = info["coordenadas"][2][1]
+            prom6 = info["coordenadas"][3][0]
+            prom7 = info["coordenadas"][3][1]
+            Angle = info["angulo"]
+            """
             #Info viene de camara aruco
             for i in range (1000):
                 prom += info["coordenadas"][0][0]
@@ -71,9 +80,9 @@ class cliente:
             prom6 = round(prom6, 2)
             prom7 = round(prom7, 2)
             Angle = round(Angle, 2)
-
+            """
             client.publish(self.get_topic(), "Coordenada x1: " + str(prom) + " Coordenada y1: " + str(prom1) + " Coordenada x2: " + str(prom2) + " Coordenada y2: " + str(prom3) + " Coordenada x3: " + str(prom4) + " Coordenada y3: " + str(prom5) + " Coordenada x4: " + str(prom6) + " Coordenada y4: " + str(prom7) + " Angulo: " + str(Angle) + " ID: " + str(info["ID"]) )
-
+            """
             prom =  0
             prom1 =  0
             prom2 =  0
@@ -83,6 +92,6 @@ class cliente:
             prom6 =  0
             prom7 =  0
             Angle =  0
-
+            """
             #client.publish(self.get_topic(),"hola")
         client.loop_stop()

@@ -11,6 +11,7 @@ from mqtt_client import cliente
 #pip opencv-contrib-python: descarga libreria cv2, aruco, y si es necesario, numpy
 
 #modifica imagen, le reduce el brillo
+
 def change_brightness(img, value):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)

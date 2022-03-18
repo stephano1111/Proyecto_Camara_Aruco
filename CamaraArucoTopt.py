@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
-import cv2.aruco as aruco 
+#import cv2.aruco as aruco 
 import math
+
 
 #importamos archivo mqtt_client.py para usar los metodos de la clase que conectan al broker publico, asi podremos enviar la informacion de los codigos aruco
 import sys
@@ -132,7 +133,7 @@ while (True):
   if ret == False:
     break  #Por si acaso no detecta nada 
   frame = cv2.resize(frame, (2040, 1080)) #Cambiar el tamaño de la ventana que despliega
-  frame = change_brightness(frame, -100)
+  frame = change_brightness(frame, 10)
   gray = cv2.cvtColor (frame, cv2.COLOR_BGR2GRAY)
   arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_50)
   arucoParams = cv2.aruco.DetectorParameters_create()

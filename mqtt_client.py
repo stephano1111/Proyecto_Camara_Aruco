@@ -17,6 +17,8 @@ class cliente:
         return self.topic
     def get_id(self):
         return self.client_id
+    def set_topic(self,topicN):
+        self.topic=topicN    
     def set_msg(self, msg):
         self.msg = msg
     def get_msg(self):
@@ -27,6 +29,7 @@ class cliente:
         client = mqtt_client.Client(self.get_id())
         client.connect(self.get_broker(), self.get_port())
         client.loop_start()
+        client.set_topic("huber/"+str(info["ID"]))
         #publicar
         prom = 0
         prom1 = 0

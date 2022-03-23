@@ -101,7 +101,7 @@ def get_ArucoInfo(markerCorner):
     topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
  
     #Calculamos el angulo de inclinación 
-    angle = get_angle(bottomRight, bottomLeft)
+    angle = get_anglerad(bottomRight, bottomLeft)
 
     info = {"coordenadas": [topLeft, topRight, bottomLeft, bottomRight], "angulo": (angle), "ID": (markerID)}
 
@@ -162,8 +162,6 @@ while (True):
         #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
         info.append(get_ArucoInfo(markerCorner))
     
-        #client.set_msg(info[0]["coordenadas"][0][0])
-        #print(info)
         client.connect_client(info)
       
 

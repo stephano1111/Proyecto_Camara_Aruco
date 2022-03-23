@@ -101,7 +101,7 @@ def get_ArucoInfo(markerCorner):
     topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
  
     #Calculamos el angulo de inclinación 
-    angle = get_anglerad(bottomRight, bottomLeft)
+    angle = get_angle(bottomRight, bottomLeft)
 
     info = {"coordenadas": [topLeft, topRight, bottomLeft, bottomRight], "angulo": (angle), "ID": (markerID)}
 
@@ -146,7 +146,7 @@ while (True):
     ids = ids.flatten()
     # loop over the detected ArUCo corners
     for (markerCorner, markerID) in zip(points, ids):
-
+        info.clear()
         topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
 
         #Obtenemos coordenadas para punto medio y lineas
@@ -163,7 +163,7 @@ while (True):
         info.append(get_ArucoInfo(markerCorner))
     
         #client.set_msg(info[0]["coordenadas"][0][0])
-        print(info)
+        #print(info)
         client.connect_client(info)
       
 

@@ -8,6 +8,8 @@ __pycache__/
 
 #Carpetas
 myTurbox/
+pybluez/
+sketch_mar28a/
 
 #Archivos
 PruebaEnvioClient.py

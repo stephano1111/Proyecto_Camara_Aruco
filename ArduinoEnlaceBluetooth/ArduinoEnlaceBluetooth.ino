@@ -1,9 +1,11 @@
 
+
+/*
 int led = 0; 
 
 void setup () {
 
-  pinMode(led,OUTPUT);
+  pinMode(13,OUTPUT);
   Serial.begin(9600);
 }
 
@@ -15,10 +17,11 @@ if(Serial.available() >0){
 
     if (data == 'y'){
 
-      digitalWrite(led, HIGH);
+      digitalWrite(13, HIGH);
     }
     else if(data == 'n'){
-      digitalWrite(led, LOW); 
+      digitalWrite(13, LOW); 
     }
 }
 }
+*/

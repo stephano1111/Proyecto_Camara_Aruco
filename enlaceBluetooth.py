@@ -1,7 +1,21 @@
-import bluetooth
+import serial
+import keyboard as k
 
-print("performing inquiry...")
-nearby_devices = bluetooth.discover_devices(lookup_names = True)
-print("found %d devices" % len(nearby_devices))
-for addr, name in nearby_devices:
-    print("  %s - %s" % (addr, name))
+
+try:
+    ser = serial.Serial("com3", 9600)
+
+    while True:
+        if k.is_pressed("y"):
+            ser.write(b'y')
+        elif k.is_pressed("n"):
+            ser.write(b'n')
+        if k.is_pressed("ENTER"):
+            ser.close()
+            break
+        
+except TimeoutError:
+    print("error")
+finally:
+    print("done")
+

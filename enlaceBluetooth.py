@@ -15,64 +15,14 @@ def scan():
         print("\n")
 
     return
+ 
+def connect ():
+    bd_addr = "00:18:E4:35:0F:D7"
+    port = 1
+    sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    sock.connect((bd_addr, port))
+    sock.send("o")
 
-def scan_services():
+    sock.close()
 
-   print("Scanning for bluetooth devices: ")
-
-   devices = bluetooth.discover_devices(lookup_names = True)
-
-   number_of_devices = len(devices)
-
-   print(number_of_devices, "devices found")
-
-   for addr,name in devices:
-
-      print("\n")
-
-      print("Device Name: %s" % (name))
-
-      print("Device MAC Address: %s" % (addr))
-
-      print("Services Found:")
-
-      services = bluetooth.find_service(address=addr)
-
-      if len(services) <=0:
-
-          print("zero services found on", addr)
-
-      else:
-
-          for serv in services:
-
-              print(serv['name'])
-
-      print("\n")
-
-   return()
-
-scan()
-#scan_services()
-"""
-import serial
-import keyboard as k
-
-
-try:
-    ser = serial.Serial("com3", 9600)
-
-    while True:
-        if k.is_pressed("y"):
-            ser.write(b'y')
-        elif k.is_pressed("n"):
-            ser.write(b'n')
-        if k.is_pressed("ENTER"):
-            ser.close()
-            break
-        
-except TimeoutError:
-    print("error")
-finally:
-    print("done")
-"""
+connect()

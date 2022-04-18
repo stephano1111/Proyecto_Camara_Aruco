@@ -1,4 +1,5 @@
 import bluetooth
+import time
 
 def scan():
     print("\n Scnng Bluetooth devices")
@@ -21,8 +22,8 @@ def connect ():
     port = 1
     sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((bd_addr, port))
-    sock.send("o")
-
+    time.sleep(2)
+    sock.send('o')
     sock.close()
 
 connect()

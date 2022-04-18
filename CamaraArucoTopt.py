@@ -12,7 +12,6 @@ from mqtt_client import cliente
 #pip opencv-contrib-python: descarga libreria cv2, aruco, y si es necesario, numpy
 
 #modifica imagen, le reduce el brillo
-
 def change_brightness(img, value):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
@@ -126,50 +125,49 @@ info = []
 
 client = cliente()
 
-#Main
-#----------------------------------------------------------------------------
-while (True):
-  ret, frame = capture.read()
-  if ret == False:
-    break  #Por si acaso no detecta nada 
-  frame = cv2.resize(frame, (2040, 1080)) #Cambiar el tamaño de la ventana que despliega
-  frame = change_brightness(frame, 10)
-  gray = cv2.cvtColor (frame, cv2.COLOR_BGR2GRAY)
-  arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_50)
-  arucoParams = cv2.aruco.DetectorParameters_create()
-  points, ids, rejected = qrCodeDetector.detectMarkers(gray, arucoDict, parameters = arucoParams)
-  
+if __name__=="__main__":
+  while (True):
+    ret, frame = capture.read()
+    if ret == False:
+      break  #Por si acaso no detecta nada 
+    frame = cv2.resize(frame, (2040, 1080)) #Cambiar el tamaño de la ventana que despliega
+    frame = change_brightness(frame, 10)
+    gray = cv2.cvtColor (frame, cv2.COLOR_BGR2GRAY)
+    arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_50)
+    arucoParams = cv2.aruco.DetectorParameters_create()
+    points, ids, rejected = qrCodeDetector.detectMarkers(gray, arucoDict, parameters = arucoParams)
     
-  if len(points) > 0:
-   
-    # flatten the ArUco IDs list
-    ids = ids.flatten()
-    # loop over the detected ArUCo corners
-    for (markerCorner, markerID) in zip(points, ids):
-        info.clear()
-        topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
-
-        #Obtenemos coordenadas para punto medio y lineas
-        mid_points(MidP, topRight, bottomLeft)
-        mid_points(Y, topRight, bottomRight)
-        mid_points(X, bottomLeft, bottomRight)
-        
-        #Calculamos el angulo de inclinación 
-        angle = get_angle(bottomRight, bottomLeft)
-
-        draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y)
-
-        #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
-        info.append(get_ArucoInfo(markerCorner))
-    
-        client.connect_client(info)
       
-
-  cv2.imshow(window_name, frame) #Despliega la ventana 
-  #cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas
+    if len(points) > 0:
     
-  if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
-    break
+      # flatten the ArUco IDs list
+      ids = ids.flatten()
+      # loop over the detected ArUCo corners
+      for (markerCorner, markerID) in zip(points, ids):
+          info.clear()
+          topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
 
-capture.release()
-cv2.destroyAllWindows()
+          #Obtenemos coordenadas para punto medio y lineas
+          mid_points(MidP, topRight, bottomLeft)
+          mid_points(Y, topRight, bottomRight)
+          mid_points(X, bottomLeft, bottomRight)
+          
+          #Calculamos el angulo de inclinación 
+          angle = get_angle(bottomRight, bottomLeft)
+
+          draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y)
+
+          #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
+          info.append(get_ArucoInfo(markerCorner))
+      
+          client.connect_client(info)
+        
+
+    cv2.imshow(window_name, frame) #Despliega la ventana 
+    #cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas
+      
+    if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
+      break
+
+  capture.release()
+  cv2.destroyAllWindows()

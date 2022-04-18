@@ -1,6 +1,6 @@
+#instalar libreria pip install paho-mqtt para el broker publico
 from paho.mqtt import client as mqtt_client
 import random
-import time
 
 #clase que tiene metodos para conectar al broker publico y mandar la informacion que se desee
 class cliente:
@@ -30,16 +30,6 @@ class cliente:
         client.loop_start()
        
         #publicar
-        prom = 0
-        prom1 = 0
-        prom2 = 0
-        prom3 = 0
-        prom4 = 0
-        prom5 = 0
-        prom6 = 0
-        prom7 = 0
-        Angle = 0
-
         for info in list:
             self.set_topic("huber/"+str(info["ID"]))
             prom = info["coordenadas"][0][0]
@@ -52,7 +42,6 @@ class cliente:
             prom7 = info["coordenadas"][3][1]
             Angle = info["angulo"]
 
-            print(self.get_topic())
             client.publish(self.get_topic(), "Coordenada x1: " + str(prom) + " Coordenada y1: " + str(prom1) + 
             " Coordenada x2: " + str(prom2) + " Coordenada y2: " + str(prom3) + " Coordenada x3: " + str(prom4) + 
             " Coordenada y3: " + str(prom5) + " Coordenada x4: " + str(prom6) + " Coordenada y4: " + str(prom7) + 

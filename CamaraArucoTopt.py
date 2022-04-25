@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
-#import cv2.aruco as aruco 
+import threading
 import math
-
+import time 
 
 #importamos archivo mqtt_client.py para usar los metodos de la clase que conectan al broker publico, asi podremos enviar la informacion de los codigos aruco
 import sys
@@ -61,7 +61,7 @@ def get_anglerad(bottomRight, bottomLeft):
 
 
 #funcion que dibuja e imprime informacion en el frame de opencv
-def draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y):
+def draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y,angle):
        
   #Se dibuja el cuadrado 
   cv2.line(frame, topLeft, topRight, (0, 255, 0), 2)
@@ -106,45 +106,56 @@ def get_ArucoInfo(markerCorner):
 
     return info
 
-capture = cv2.VideoCapture(0)
-qrCodeDetector = cv2.aruco
-
-window_name = 'Hola' #Nombre de la ventana
-
-
-#resolucion 1080 p
-capture.set(3, 1920)
-capture.set(4, 1080)
-
-points = np.arange(8).reshape(4,2)
-MidP = np.arange(2).reshape(1,2)
-Y = np.arange(2).reshape(1,2)
-X = np.arange(2).reshape(1,2)
-
-info = []
-
-client = cliente()
+def send_public_client():
+  info=[]     
+  start=time.time()
+  while True:
+    end=time.time()
+    #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
+    if end-start>=5:
+      info.append(get_ArucoInfo(markerCorner))   
+      client.connect_client(info)
+      break
 
 if __name__=="__main__":
+
+  capture = cv2.VideoCapture(0)
+  qrCodeDetector = cv2.aruco
+
+  window_name = 'Camara detector qr' #Nombre de la ventana
+
+  #resolucion 1080 p
+  capture.set(3, 1920)
+  capture.set(4, 1080)
+
+  points = np.arange(8).reshape(4,2)
+  MidP = np.arange(2).reshape(1,2)
+  Y = np.arange(2).reshape(1,2)
+  X = np.arange(2).reshape(1,2)
+
+  client = cliente()
+
   while (True):
     ret, frame = capture.read()
     if ret == False:
       break  #Por si acaso no detecta nada 
     frame = cv2.resize(frame, (2040, 1080)) #Cambiar el tamaño de la ventana que despliega
     frame = change_brightness(frame, 10)
+
     gray = cv2.cvtColor (frame, cv2.COLOR_BGR2GRAY)
+
     arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_50)
+
     arucoParams = cv2.aruco.DetectorParameters_create()
+
     points, ids, rejected = qrCodeDetector.detectMarkers(gray, arucoDict, parameters = arucoParams)
     
-      
     if len(points) > 0:
-    
       # flatten the ArUco IDs list
       ids = ids.flatten()
       # loop over the detected ArUCo corners
       for (markerCorner, markerID) in zip(points, ids):
-          info.clear()
+
           topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
 
           #Obtenemos coordenadas para punto medio y lineas
@@ -155,19 +166,15 @@ if __name__=="__main__":
           #Calculamos el angulo de inclinación 
           angle = get_angle(bottomRight, bottomLeft)
 
-          draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y)
+          draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y, angle)
 
-          #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
-          info.append(get_ArucoInfo(markerCorner))
-      
-          client.connect_client(info)
-        
-
+          h=threading.Thread(target=send_public_client )
+          h.start()
+           
     cv2.imshow(window_name, frame) #Despliega la ventana 
-    #cv2.setWindowProperty(window_name, cv2.WND_PROP_TOPMOST, 1) #Aparece al frente de otras ventanas
       
     if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
       break
-
+  
   capture.release()
   cv2.destroyAllWindows()

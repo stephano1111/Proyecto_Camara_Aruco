@@ -106,28 +106,12 @@ def get_ArucoInfo(markerCorner, markerID):
 
     return info
 
-def send_public_client(markerCorner, markerID):
+def send_public_client():
   info=[]  
-  sleep(10)   
   info.append(get_ArucoInfo(markerCorner, markerID))   
-  print(info, end=" acaba\n")
-  sleep(2)
-  #client.connect_client(info)
-
-class Send(threading.Thread):
-  def run(self):
-    info=[]  
-    while True:
-      info.clear()  
-      info.append(get_ArucoInfo(markerCorner, markerID))   
-      print(len(info))
-      sleep(5)
-      if len(info)==0:
-        break
-      print(info, end=" acaba\n")
-    print("finish")
+  client.connect_client(info)
      
-visual=False
+visual=True
 
 if __name__=="__main__":
 
@@ -180,15 +164,14 @@ if __name__=="__main__":
 
           if visual==True:
             draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y, angle)
-          Send().start()
-          
-
+          h=threading.Thread(target=send_public_client)
+          h.start()
+  
     if visual ==True:
       cv2.imshow(window_name, frame) #Despliega la ventana 
 
       if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
         break
   
-  if visual==True: 
-    capture.release()
-    cv2.destroyAllWindows()
+  capture.release()
+  cv2.destroyAllWindows()

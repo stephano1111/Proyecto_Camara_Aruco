@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import threading
 import math
-import time 
+from time import sleep
 
 #importamos archivo mqtt_client.py para usar los metodos de la clase que conectan al broker publico, asi podremos enviar la informacion de los codigos aruco
 import sys
@@ -95,7 +95,7 @@ def get_coordenates(markerCorner):
   return topLeft, topRight, bottomLeft, bottomRight
 
 #almacenamos info de coordenadas y angulo del aruco, y la almacenamos en un diccionario
-def get_ArucoInfo(markerCorner):
+def get_ArucoInfo(markerCorner, markerID):
 
     topLeft, topRight, bottomLeft, bottomRight = get_coordenates(markerCorner)
  
@@ -106,16 +106,28 @@ def get_ArucoInfo(markerCorner):
 
     return info
 
-def send_public_client():
-  info=[]     
-  start=time.time()
-  while True:
-    end=time.time()
-    #En una lista almacenamos la informacion del codigo aruco en una lista, se podran almacenar varios arucos que se detecten
-    if end-start>=5:
-      info.append(get_ArucoInfo(markerCorner))   
-      client.connect_client(info)
-      break
+def send_public_client(markerCorner, markerID):
+  info=[]  
+  sleep(10)   
+  info.append(get_ArucoInfo(markerCorner, markerID))   
+  print(info, end=" acaba\n")
+  sleep(2)
+  #client.connect_client(info)
+
+class Send(threading.Thread):
+  def run(self):
+    info=[]  
+    while True:
+      info.clear()  
+      info.append(get_ArucoInfo(markerCorner, markerID))   
+      print(len(info))
+      sleep(5)
+      if len(info)==0:
+        break
+      print(info, end=" acaba\n")
+    print("finish")
+     
+visual=False
 
 if __name__=="__main__":
 
@@ -166,15 +178,17 @@ if __name__=="__main__":
           #Calculamos el angulo de inclinación 
           angle = get_angle(bottomRight, bottomLeft)
 
-          draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y, angle)
+          if visual==True:
+            draw_aruco(frame, topLeft, topRight, bottomLeft, bottomRight, MidP, X, Y, angle)
+          Send().start()
+          
 
-          h=threading.Thread(target=send_public_client )
-          h.start()
-           
-    cv2.imshow(window_name, frame) #Despliega la ventana 
-      
-    if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
-      break
+    if visual ==True:
+      cv2.imshow(window_name, frame) #Despliega la ventana 
+
+      if cv2.waitKey(1) & 0xFF == 27: #Presiona esc para salir 
+        break
   
-  capture.release()
-  cv2.destroyAllWindows()
+  if visual==True: 
+    capture.release()
+    cv2.destroyAllWindows()

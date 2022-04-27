@@ -17,13 +17,13 @@ def scan():
 
     return
  
-def connect ():
+def connect (ubi):
     bd_addr = "00:18:E4:35:0F:D7"
     port = 1
     sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((bd_addr, port))
     time.sleep(2)
-    sock.send('o')
+    sock.send(ubi)
     sock.close()
 
 connect()

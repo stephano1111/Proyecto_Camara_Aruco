@@ -1,6 +1,4 @@
-
 #include <SoftwareSerial.h>
-
 
 void setup(){
   
@@ -18,9 +16,9 @@ void loop(){
  if(Serial.available()>0){ //Comprobamos si en el buffer hay datos
    char dato;
    dato = Serial.read();  //Lee cada carácter uno por uno y se almacena en una variable
-   Serial.println(dato);  //Imprimimos en la consola el carácter recibido
+   Serial.print(dato);  //Imprimimos en la consola el carácter recibido
    
-   if (dato == 'o'){
+   if (dato == 'w'){
       digitalWrite(11,HIGH);
    }
    else {

@@ -8,6 +8,7 @@ def scan():
     print(number_of_devices, " devices found")
 
     for addr, name, devices_class in devices:
+        #if(name == "HC-05"):
         print("\n Device: ")
         print("Device Name: %s " % (name))
         print("Device MAC address: %s " % (addr))
@@ -17,13 +18,22 @@ def scan():
 
     return
  
-def connect (ubi):
-    bd_addr = "00:18:E4:35:0F:D7"
+def connect ():
+   #98:D3:31:F5:8C:3E robot chiquito
+    #bd_addr = "00:18:E4:35:0F:D7"
+    bd_addr = "98:D3:31:F5:8C:3E"
     port = 1
     sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((bd_addr, port))
     time.sleep(2)
-    sock.send(ubi)
+    #Información para el robot
+    sock.send('H +110 -110')
+    """
+    time.sleep(1)
+    sock.send("0")
+    time.sleep(1)
+    sock.send("0")
     sock.close()
-
+    """
+#scan()
 connect()

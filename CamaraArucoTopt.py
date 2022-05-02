@@ -111,6 +111,7 @@ def send_public_client():
   info.append(get_ArucoInfo(markerCorner, markerID))   
   client.connect_client(info)
      
+#si es True, se visualizara la camara y su interfaz, si es falsa ejecutará la camara sin mostrar nada
 visual=True
 
 if __name__=="__main__":

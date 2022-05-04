@@ -20,14 +20,14 @@ def scan():
  
 def connect ():
    #98:D3:31:F5:8C:3E robot chiquito
-    #bd_addr = "00:18:E4:35:0F:D7"
-    bd_addr = "98:D3:31:F5:8C:3E"
+    bd_addr = "00:18:E4:35:0F:D7"
+    #bd_addr = "98:D3:31:F5:8C:3E"
     port = 1
     sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((bd_addr, port))
-    time.sleep(2)
+    #time.sleep(2)
     #Información para el robot
-    sock.send('H +110 -110')
+    sock.send('o')
     """
     time.sleep(1)
     sock.send("0")

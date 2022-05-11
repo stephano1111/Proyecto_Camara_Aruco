@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import threading
 import math
-from time import sleep
 
 #importamos archivo mqtt_client.py para usar los metodos de la clase que conectan al broker publico, asi podremos enviar la informacion de los codigos aruco
 import sys

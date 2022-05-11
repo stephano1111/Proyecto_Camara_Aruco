@@ -3,6 +3,7 @@ from paho.mqtt import client as mqtt_client
 import random
 
 #clase que tiene metodos para conectar al broker publico y mandar la informacion que se desee
+#esta clase es usado en CamaraArucoTopt.py
 class cliente:
     def __init__(self, broker = 'broker.hivemq.com', port = 1883, topic = "huber/#", client_id = f'python-mqtt-{random.randint( 0, 1000)}'):
         self.broker = broker

@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 
-# This is the Subscriber
+#Este codigo recibe la inoformacion que se envia en le broker publico de Hive mqtt
 
 def on_connect(client, userdata, flags, rc):
   print("Connected with result code " + str(rc))

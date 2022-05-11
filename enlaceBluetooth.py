@@ -25,7 +25,7 @@ def connect ():
     port = 1
     sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((bd_addr, port))
-    #time.sleep(2)
+    time.sleep(2)
     #Información para el robot
     sock.send('o')
     """
@@ -33,7 +33,8 @@ def connect ():
     sock.send("0")
     time.sleep(1)
     sock.send("0")
+"""
     sock.close()
-    """
+
 #scan()
 connect()
